@@ -2,7 +2,7 @@
   "name": "redux-forever",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://dolphin-vr.github.io/redux-forever/",
+  "homepage": "https://groguls.github.io/blended-redux-07-10/",
   "dependencies": {
     "@emotion/react": "^11.9.3",
     "@emotion/styled": "^11.9.3",
