@@ -11,57 +11,41 @@ import {
   Text,
   Todo,
 } from 'components';
+import { useState } from 'react';
+import { useEffect } from 'react';
 
-export class App extends Component {
-  state = {
-    todos: [],
-  };
 
-  componentDidMount() {
-    const todos = JSON.parse(localStorage.getItem('todos'));
 
-    if (todos) {
-      this.setState(() => ({ todos }));
-    }
-  }
-  componentDidUpdate(prevProps, prevState) {
-    const { todos } = this.state;
+export const App = ()=>{
 
-    if (prevState.todos !== todos) {
-      localStorage.setItem('todos', JSON.stringify(todos));
-    }
-  }
+  const [todos, setTodos] = useState(JSON.parse(localStorage.getItem('todos')) ?? []);
+  
+  useEffect(()=>{
+    localStorage.setItem('todos', JSON.stringify(todos))
+  }, [todos])
 
-  addTodo = text => {
+  const addTodo = text => {
     const todo = {
       id: nanoid(),
       text,
     };
-
-    this.setState(({ todos }) => ({
-      todos: [...todos, todo],
-    }));
+    setTodos([...todos, todo]);
+      };
+  
+  const handleSubmit = data => {
+    addTodo(data);
   };
 
-  handleSubmit = data => {
-    this.addTodo(data);
-  };
-
-  deleteTodo = id => {
-    this.setState(prevState => ({
-      todos: prevState.todos.filter(todo => todo.id !== id),
-    }));
-  };
-
-  render() {
-    const { todos } = this.state;
+  const deleteTodo = id => {
+    setTodos(todos.filter(todo => todo.id !== id))
+    };  
 
     return (
       <>
         <Header />
         <Section>
           <Container>
-            <SearchForm onSubmit={this.handleSubmit} />
+            <SearchForm onSubmit={handleSubmit} />
 
             {todos.length === 0 && (
               <Text textAlign="center">There are no any todos ... </Text>
@@ -75,7 +59,7 @@ export class App extends Component {
                       id={todo.id}
                       text={todo.text}
                       counter={index + 1}
-                      onClick={this.deleteTodo}
+                      onClick={deleteTodo}
                     />
                   </GridItem>
                 ))}
@@ -85,4 +69,3 @@ export class App extends Component {
       </>
     );
   }
-}
