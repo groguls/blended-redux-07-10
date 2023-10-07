@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-
 import { FiSearch } from 'react-icons/fi';
 import { FormBtn, InputSearch, SearchFormStyled } from './SearchForm.styled';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addTodo } from 'redux/todoSlice';
 
-export const SearchForm = ({onSubmit})=>{
+export const SearchForm = ()=>{
   const [query, setQuery] = useState('');
-
+  const dispatch = useDispatch();
   
   const handleInput = e => {
     setQuery(e.currentTarget.value)
@@ -14,7 +14,7 @@ export const SearchForm = ({onSubmit})=>{
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit(query);
+    dispatch(addTodo(query));
     setQuery('');
   };
   
@@ -33,28 +33,4 @@ export const SearchForm = ({onSubmit})=>{
       />
     </SearchFormStyled>
   );
-}
-
-export class SearchForm1 extends Component {
-
-
-  render() {
-    const { query } = this.state;
-
-    return (
-      <SearchFormStyled onSubmit={this.handleSubmit}>
-        <FormBtn type="submit">
-          <FiSearch size="16px" />
-        </FormBtn>
-        <InputSearch
-          onChange={this.handleInput}
-          placeholder="What do you want to write?"
-          name="search"
-          required
-          value={query}
-          autoFocus
-        />
-      </SearchFormStyled>
-    );
-  }
 }
